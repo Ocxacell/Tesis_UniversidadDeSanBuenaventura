@@ -7,5 +7,5 @@ if __name__ == "__main__":
     df = Date_To_Data(df,"Fecha/Hora de apertura")
     LimiteSuperior=40
     LimiteInferior=1
-    Limitar_tiempos(LimiteSuperior,LimiteInferior)
-    
+    Limitar_tiempos(df,LimiteSuperior,LimiteInferior)
+
