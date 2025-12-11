@@ -14,3 +14,40 @@ def Graficacion_loss(model,Ls):
     plt.legend()
     plt.grid()
     plt.show()
+
+
+def Graficar_frecuencia(df, columna_target, modo="curva"):
+    """
+    Grafica la frecuencia del target como curva o histograma.
+    
+    Parámetros:
+    df : DataFrame
+    columna_target : str -> nombre de la columna target
+    modo : "curva" o "hist" 
+    """
+    # Eliminar valores nulos por seguridad
+    serie = df[columna_target].dropna()
+
+    # Calcular la frecuencia de valores
+    cont = serie.value_counts().sort_index()
+
+    plt.figure(figsize=(8, 5))
+
+    if modo == "curva":
+        plt.plot(cont.index, cont.values, marker="o")
+        plt.title(f"Frecuencia del target: {columna_target} (Curva)")
+        plt.xlabel("Valor del target")
+        plt.ylabel("Frecuencia")
+
+    elif modo == "hist":
+        plt.hist(serie, bins=20)
+        plt.title(f"Distribución del target: {columna_target} (Histograma)")
+        plt.xlabel("Valor del target")
+        plt.ylabel("Frecuencia")
+
+    else:
+        print("Modo inválido: usa 'curva' o 'hist'")
+        return
+
+    plt.grid(True)
+    plt.show()
