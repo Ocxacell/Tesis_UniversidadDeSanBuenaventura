@@ -22,3 +22,25 @@ def Arreglar_vacios(df, NanAdmitidos=1000):
 def Eliminar_filas_por_valor(df, columna, valor):
     df = df[df[columna] != valor]
     return df
+
+def Umbral_Para_Outliners(df,rangosuperior,rangoinferior,Porcentaje,Seed,target):
+    mask = (df[target] >= rangoinferior) & (df[target] <= rangosuperior)
+    df_aislado = df[mask]
+    df_otros = df[~mask]
+
+    df_sub = df_aislado.sample(frac=Porcentaje, random_state=Seed)
+
+    df_balanceado = pd.concat([df_sub, df_otros])
+
+    
+
+    print("Original:", len(df))
+    print("Balanceado:", len(df_balanceado))
+    print("Antes")
+    suma = ((df[target] >= rangoinferior) & (df[target] <= rangosuperior)).sum()
+    print("Casos entre",rangoinferior," y ",rangosuperior," después del submuestreo:", suma)
+    df = df_balanceado
+    print("Despues")
+    casos_filtrado = ((df[target] >= rangoinferior) & (df[target] <= rangosuperior)).sum()
+    print("Casos entre",rangoinferior," y ",rangosuperior," después del submuestreo:", casos_filtrado)
+    return df
