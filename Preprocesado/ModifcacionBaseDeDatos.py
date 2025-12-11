@@ -1,8 +1,8 @@
 import pandas as pd
 
-def Limitar_tiempos(df,RangoSuperior, RangoInferior):
-    df = df[df["tiempo_solucion_horas"] >= RangoInferior]
-    df = df.drop(df[df["tiempo_solucion_horas"] > RangoSuperior].index)
+def Limitar_tiempos(df,RangoSuperior, RangoInferior,target):
+    df = df[df[target] >= RangoInferior]
+    df = df.drop(df[df[target] > RangoSuperior].index)
     return df
 
 def Arreglar_vacios(df, NanAdmitidos=1000):
@@ -17,4 +17,8 @@ def Arreglar_vacios(df, NanAdmitidos=1000):
             df = df.dropna(subset=[col])
         else:
             df[col] = df[col].fillna('Desconocido')
+    return df
+
+def Eliminar_filas_por_valor(df, columna, valor):
+    df = df[df[columna] != valor]
     return df
