@@ -1,8 +1,8 @@
 from Lectura.LecturaExcel import Leer_excel
-from Preprocesado.ModifcacionBaseDeDatos import Limitar_tiempos, Arreglar_vacios, Eliminar_filas_por_valor
+from Preprocesado.ModifcacionBaseDeDatos import Limitar_tiempos, Arreglar_vacios, Eliminar_filas_por_valor,Umbral_Para_Outliners
 from Utilidad.ConversionFechas import Date_To_Data 
 from Entrenamiento.MetodosDeEntrenamiento import Entrenamiento_cat
-from Graficos.GeneracionDeGraficas import Graficacion_loss
+from Graficos.GeneracionDeGraficas import Graficacion_loss, Graficar_frecuencia
 import pandas as pd
 
 if __name__ == "__main__":
@@ -12,18 +12,15 @@ if __name__ == "__main__":
     df = Eliminar_filas_por_valor(df,"Dificil acceso","NN")
     LimiteSuperior=3000
     LimiteInferior=1
-
-    print(df)
-    print("Yiempo")
-    print(df["Tiempo Total Ejecutado"])
     df=Limitar_tiempos(df,LimiteSuperior,LimiteInferior,"Tiempo Total Ejecutado")
     df=Arreglar_vacios(df,14000)
-    print(df)
-    print("Yiempo")
-    print(df["Tiempo Total Ejecutado"])
+    df=Umbral_Para_Outliners(df,300,1,0.2,42,"Tiempo Total Ejecutado")
+    #df=Umbral_Para_Outliners(df,1500,1200,0.3,42,"Tiempo Total Ejecutado")
     ColumnasIgnoradas = ['Fecha/Hora de apertura','Número del caso',"Caso Asociador","Caso Nodo","Tiempo Total Ejecutado"]
     X=df.drop(columns=ColumnasIgnoradas)
     y=df["Tiempo Total Ejecutado"]
     Ls="MAE"
-    modelo=Entrenamiento_cat(X,y,ite=10000,Depth=5,Ls=Ls,Lr=0.09)  
+    modelo=Entrenamiento_cat(X,y,ite=1000,Depth=5 ,Ls=Ls,Lr=0.09)  
     Graficacion_loss(modelo,Ls)
+
+    Graficar_frecuencia(df,"Tiempo Total Ejecutado","hist")
