@@ -51,3 +51,16 @@ def Graficar_frecuencia(df, columna_target, modo="curva"):
 
     plt.grid(True)
     plt.show()
+
+def Grafica_prediccion(df):
+    plt.figure(figsize=(7, 6))
+    plt.scatter(df["Real"], df["Predicho"], alpha=0.6)
+    max_val = max(df["Real"].max(), df["Predicho"].max())
+    min_val = min(df["Real"].min(), df["Predicho"].min())
+    plt.plot([min_val, max_val], [min_val, max_val], linestyle="--")
+
+    plt.xlabel("Real")
+    plt.ylabel("Predicho")
+    plt.title("Comparación: Real vs Predicho")
+    plt.grid(True)
+    plt.show()
