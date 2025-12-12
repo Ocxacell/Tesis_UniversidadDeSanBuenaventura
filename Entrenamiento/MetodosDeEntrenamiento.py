@@ -1,10 +1,8 @@
 import pandas as pd
 from catboost import CatBoostRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error
-import matplotlib.pyplot as plt
 
-def Entrenamiento_cat (X,y,ite=1000,Lr=0.05,Ls="Mae",Depth=5,Verbose=200,Seed=15,EarlyStop=200):
+def Entrenamiento_cat (X,y,ite=1000,Lr=0.05,Ls="MAE",Depth=5,Verbose=200,Seed=15,EarlyStop=200):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=15)
     # ⿨ Identificar features categóricas y numéricas
     cat_features = X_train.select_dtypes(include=["object"]).columns.tolist()
@@ -27,6 +25,6 @@ def Entrenamiento_cat (X,y,ite=1000,Lr=0.05,Ls="Mae",Depth=5,Verbose=200,Seed=15
         use_best_model=True,
         plot=False
     )
-    
-    return model
+    Y_pred= model.predict(X_test)
+    return model,Y_pred,y_test
     
